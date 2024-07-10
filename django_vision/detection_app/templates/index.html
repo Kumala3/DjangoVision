@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Real-time Object Detection</title>
+</head>
+
+<body>
+    <h1>Real-time Object Detection</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    <div id="result"></div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const resultDiv = document.getElementById('result');
+
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/detect/');
+
+        socket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            resultDiv.innerHTML = `Detected: ${data.object} (Confidence: ${(data.confidence * 100).toFixed(2)}%)`;
+        };
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function (err) {
+                console.log("An error occurred: " + err);
+            });
+
+        function sendFrame() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg', 0.5);
+            socket.send(JSON.stringify({ frame: imageData.split(',')[1] }));
+        }
+
+        setInterval(sendFrame, 100);
+    </script>
+</body>
+
+</html>
