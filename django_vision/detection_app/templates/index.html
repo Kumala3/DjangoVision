@@ -17,7 +17,8 @@
         const ctx = canvas.getContext('2d');
         const resultDiv = document.getElementById('result');
 
-        const socket = new WebSocket('ws://' + window.location.host + '/ws/detect/');
+        const socketURl = `ws://${window.location.host}/ws/detect/`
+        const socket = new WebSocket(socketURl);
 
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
