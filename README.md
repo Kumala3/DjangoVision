@@ -2,7 +2,7 @@
 
 Real-time object detection web app powered by Django and TensorFlow
 
-## Installation
+## Backend Installation
 
 1. **Clone the repository**
 
