@@ -41,7 +41,17 @@ Real-time object detection web app powered by Django and TensorFlow
     pip install -r requirements.txt
     ```
 
-5. **Run the project with daphne**
+5. **Rename** `.env.dist` to `.env` and replace your environmental variables
+
+    **Example:**
+    
+    `django_vision/.env`
+    ```
+    SECRET_KEY=Your_Django_Secret_Key
+    DEBUG=False
+    ```
+
+6. **Run the project with daphne**
 
     ```bash
     daphne django_vision.asgi:application
